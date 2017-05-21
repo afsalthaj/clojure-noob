@@ -65,3 +65,18 @@
      (symmetrize-body-part assym-hobbit-body-parts))
      "Hurrayyyy! My first clojure program worked, although textbookyyy!"
      "Why not??")
+
+
+
+;; Something more
+;; see if the you are able to understand the code
+(defn hit [asym-body-parts]
+   "This is all about Hit Hit Hit Hittttttttttt"
+   (let [sym-body-parts (better-symmetrize-body-parts asym-body-parts) 
+         total-size (reduce + (map :size sym-body-parts))
+         target (rand total-size)]
+     (loop [[part & remaining] sym-body-parts 
+            accumulated-size (:size part)]
+            (if (> accumulated-size target)
+              part
+              (recur remaining (+ accumulated-size (:size (first remaining))))))))

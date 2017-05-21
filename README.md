@@ -8,3 +8,4 @@ Something for me to learn clojure. Might be useful for those who want to do a qu
 ## Reference
 http://yogthos.github.io/ClojureDistilled.html </br>
 http://www.braveclojure.com/do-things/
+http://stackoverflow.com/questions/19318977/difference-between-arrow-and-double-arrow-macros-in-clojure

@@ -65,5 +65,71 @@
 
 ;; The Collection Abstraction
 ;; The collection abstraction is closely related to the sequence abstraction. All of Clojure’s core data structures—vectors, maps, lists, and sets—take part in both abstractions.
+;;he sequence abstraction is about operating on members individually, whereas the collection abstraction is about the data structure as a whole. For example, the collection functions count, empty?, and every? aren’t about any individual element; they’re about the whole:
+
+(map identity {:sunlight-reaction "Glitter!"})
+
+(into {} (map identity {:sunlight-reaction "Glitter!"}))
+
+(map identity ["a" "b" "c"])
+
+(into #{} (map identity ["a" "a" "b" "b" "c"]))
+
+;;f into were asked to describe its strengths at a job interview, it would say, “I’m great at taking two collections and adding all the elements from the second to the first.”
+
+;; clojure-noob.core> []
+;; []
+;; clojure-noob.core> (into [] [1 2 3 4 5])
+;; [1 2 3 4 5]
+;; clojure-noob.core> (into [1] [1 2 3 4 5])
+;; [1 1 2 3 4 5]
+;; clojure-noob.core> (conj [1] [1])
+;; [1 [1]]
+
+;;Notice that the number 1 is passed as a scalar (singular, non-collection) value, whereas into’s second argument must be a collection.
+
+;; chained operation sequence
+(filter #(> % 2) (map #(+ % 2) [1 2 3 4]))
+
+;; is equivalent to
+(->> [1 2 3 4] (map #(+ % 2))) (filter #(> % 2))
+
+(defn my-conj
+  [target & additions]
+  (into target additions))
+
+(my-conj [0] 1 2 3)
+; => [0 1 2 3]
+
+;; clojure-noob.core> (conj [1 2 3 4] 5)
+;; [1 2 3 4 5]
+;; clojure-noob.core> (conj [1] 2 3 4 5)
+;; [1 2 3 4 5]
+;; (apply conj [1] [2 2 3 4])
+;; [1 2 2 3 4]
+;; clojure-noob.core> 
+(def add10 (partial + 10))
 
 
+(defn lousy-logger
+  [log-level message]
+  (condp = log-level
+    :warn (clojure.string/lower-case message)
+    :emergency (clojure.string/upper-case message)))
+
+(def warn (partial lousy-logger :warn))
+
+(warn "Red light ahead")
+; => "red light ahead"
+
+;; complement
+(defn identify-humans
+  [social-security-numbers]
+  (filter #(not (vampire? %))
+          (map vampire-related-details social-security-numbers)))
+
+;;(def not-vampire? (complement vampire?))
+(defn identify-humans
+  [social-security-numbers]
+  (filter not-vampire?
+          (map vampire-related-details social-security-numbers)))

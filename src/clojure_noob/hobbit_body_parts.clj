@@ -33,6 +33,7 @@
 ;; add more maps into the sequence where the new map will just replace the
 ;; word "left" from the values of the maps and add it as it is into the map
 ;; resulting in `finalbodyparts`
+;; the loop is more-or-less the same as the tail recursive approach of `FP`
 (defn symmetrize-body-part 
 "Expects a sequence of maps of body parts with :name and :size"
 [asym-body-parts]
@@ -48,3 +49,19 @@
 
 ;; uncomment below code and run
 (println (clojure.string/join "\n " (symmetrize-body-part assym-hobbit-body-parts)))
+
+
+(defn better-symmetrize-body-parts
+[asym-body-parts]
+(reduce (fn [finalbodyparts part] 
+          (into finalbodyparts (set [part (replace-left-right part)])))
+        []
+        asym-body-parts))
+
+;; using the two functions should give the same result, and the below
+;; expression should give "Hurray"
+(if (= 
+     (better-symmetrize-body-parts assym-hobbit-body-parts) 
+     (symmetrize-body-part assym-hobbit-body-parts))
+     "Hurrayyyy! My first clojure program worked, although textbookyyy!"
+     "Why not??")

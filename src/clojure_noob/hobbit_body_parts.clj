@@ -1,6 +1,7 @@
 (ns clojure-noob.core
   (:gen-class))
 
+;; binding the sequence of hashmaps to assym-hobbit-body-parts
 (def assym-hobbit-body-parts [{:name "head" :size 3}
                               {:name "lef-eye" :size 1}
                               {:name "left-ear" :size 1}
@@ -21,14 +22,17 @@
                               {:name "left-achilles" :size 1}
                               {:name "left-foot" :size 2}])
 
-
+;; replace a string which is a value of a hashmap part
 (defn replace-left-right [part]
   (def replaced-name (clojure.string/replace (:name part) #"^left-" "right-" ))
   {:name replaced-name :size (:size part)})
 
+;; execute this command to see what happens
 (replace-left-right {:name "left-data" :size 1})  
 
-
+;; add more maps into the sequence where the new map will just replace the
+;; word "left" from the values of the maps and add it as it is into the map
+;; resulting in `finalbodyparts`
 (defn symmetrize-body-part 
 "Expects a sequence of maps of body parts with :name and :size"
 [asym-body-parts]
@@ -44,4 +48,3 @@
 
 ;; uncomment below code and run
 (println (clojure.string/join "\n " (symmetrize-body-part assym-hobbit-body-parts)))
-

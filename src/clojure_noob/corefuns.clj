@@ -122,14 +122,59 @@
 (warn "Red light ahead")
 ; => "red light ahead"
 
+(defn vampire? [&restvalue] (true) )
+
+(def vampires [{:10  "afsal"} {:20 "thaj"}])
+
+(defn vampire-related-details 
+  [integervalue]
+    (get vampires integervalue))
+
+
 ;; complement
 (defn identify-humans
   [social-security-numbers]
   (filter #(not (vampire? %))
           (map vampire-related-details social-security-numbers)))
 
-;;(def not-vampire? (complement vampire?))
+(def not-vampire? (complement vampire?))
+
 (defn identify-humans
   [social-security-numbers]
   (filter not-vampire?
           (map vampire-related-details social-security-numbers)))
+
+;; apply function
+(defn some-fun-taking-rest [restvalues] 
+  (println restvalues))
+
+
+(defn idontknowmuchaboutargs [noideawhatthisis]
+  (apply max noideawhatthisis))
+
+(idontknowmuchaboutargs [1 2 3])
+
+
+;;memoize
+
+(defn sleepy-identity
+  "Returns the given value after 1 second"
+  [x]
+  (Thread/sleep 1000)
+  x)
+(sleepy-identity "Mr. Fantastico")
+; => "Mr. Fantastico" after 1 second
+
+(sleepy-identity "Mr. Fantastico")
+; => "Mr. Fantastico" after 1 second
+
+(def memo-sleepy-identity (memoize sleepy-identity))
+
+(memo-sleepy-identity "Mr. Fantastico")
+; => "Mr. Fantastico" after 1 second
+
+(memo-sleepy-identity "Mr. Fantastico")
+; => "Mr. Fantastico" immediately
+
+
+

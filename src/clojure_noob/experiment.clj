@@ -53,20 +53,40 @@
   (into [] (filter not-to-be-evaluated? evaluations)))
 
 ;; applicant ids whose evaluations are not pending
-(defn get-applicants-completed-evaluations[evaluations] (into [] (map :application (get-completed-evaluations evaluations))))
-
+(defn get-applicants-completed-evaluations 
+  [evaluations] 
+  (into [] (map :application (get-completed-evaluations evaluations))))
 
 ;; if finalised application is completed evaluation
 (defn application-in-evaluation-completed-list?
   [evaluations application] 
-  (some #(= (:id application) % ) (get-applicants-completed-evaluations evaluations)))
+  (some #(= (:id application) %) (get-applicants-completed-evaluations evaluations)))
 
 ;; if a finalised application is having a pending evaluation
 (def application-not-in-complete-evaluation-list? (complement application-in-evaluation-completed-list?))
 
 ;; target all finalised applications with pending evaluations
 (defn all-uncompleted-evaluations
-  [applications]
-  (filter (partial application-not-in-complete-evaluation-list? evaluations) applications))
+  [applications evaluations]
+  (->> applications (get-finalised-applications) (filter (partial application-not-in-complete-evaluation-list? evaluations))))
 
-;; (all-uncompleted-evaluations applications)
+;; final function call
+(def firstresult (into [] (all-uncompleted-evaluations applications evaluations)))
+
+;; merge a job with various instances in applications sequence
+(defn merge-job-application
+  [applications job]
+  (->> applications (map #(if (= (:job %)(:id job))(conj % job) %)) 
+                    (filter #(:invited_evaluators %))))
+
+;; get the complete list of job and application recor
+(defn get-job-application-records
+  [jobs uncompletedevaluations-as-applications]
+  (reduce (fn[collated-job-applications job]
+   (into collated-job-applications 
+        (merge-job-application uncompletedevaluations-as-applications job))) [] jobs))
+
+(defn explode-evaluators-in-job-application-records
+ [application-job-records]
+
+)

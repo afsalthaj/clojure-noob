@@ -1,7 +1,7 @@
 (ns clojure-noob.core-test
   (:require [clojure.test :refer :all]
-            [clojure-noob.core :refer :all]))
+            [clojure-noob.experiment :refer :all]))
 
-(deftest a-test
-  (testing "FIXME, I fail."
-    (is (= 0 1))))
+(deftest evaluation-nv-test
+  (testing "if a particular evaluation is nv"
+    (is (= (evaluation-nv? (first evaluations)) false))))

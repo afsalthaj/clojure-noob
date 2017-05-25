@@ -92,7 +92,8 @@
 (filter #(> % 2) (map #(+ % 2) [1 2 3 4]))
 
 ;; is equivalent to
-(->> [1 2 3 4] (map #(+ % 2))) (filter #(> % 2))
+(->> [1 2 3 4] (map #(+ % 2)))
+(filter #(> % 2))
 
 (defn my-conj
   [target & additions]
@@ -122,13 +123,13 @@
 (warn "Red light ahead")
 ; => "red light ahead"
 
-(defn vampire? [&restvalue] (true) )
+(defn vampire? [&restvalue] (true))
 
-(def vampires [{:10  "afsal"} {:20 "thaj"}])
+(def vampires [{:10 "afsal"} {:20 "thaj"}])
 
-(defn vampire-related-details 
+(defn vampire-related-details
   [integervalue]
-    (get vampires integervalue))
+  (get vampires integervalue))
 
 
 ;; complement
@@ -145,7 +146,7 @@
           (map vampire-related-details social-security-numbers)))
 
 ;; apply function
-(defn some-fun-taking-rest [restvalues] 
+(defn some-fun-taking-rest [restvalues]
   (println restvalues))
 
 

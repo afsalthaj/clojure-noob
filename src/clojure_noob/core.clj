@@ -10,34 +10,34 @@
   []
   (println "Chooo Choo"))
 
-(defn simple-fun [] 
+(defn simple-fun []
   (if false
-    (do 
+    (do
       (println "my name is afsal")
-       "my second name is thaj")
+      "my second name is thaj")
 
-    (do 
+    (do
       (println "My name is not afsal")
       "My second name is not afsal")))
 
 (defn simple-when []
   (when true
-   "My name is afsal and here it ends, i don't have an else statement"
+    "My name is afsal and here it ends, i don't have an else statement"
+    )
   )
-)
 
 (def namedthisparameter [1 2 3 43 5])
 
-(defn error-msg 
-[severity]
-(str "OH GOD! ITS A DISASTER WE ARE "
-  (if (= severity :mild)
-    "SAVED"
-    "DOOOOOOOOOOOOOOOOOOOOOOOOOOOOMMMMED!!!"
-  )))
+(defn error-msg
+  [severity]
+  (str "OH GOD! ITS A DISASTER WE ARE "
+       (if (= severity :mild)
+         "SAVED"
+         "DOOOOOOOOOOOOOOOOOOOOOOOOOOOOMMMMED!!!"
+         )))
 
 
- 
+
 (def value "value is defined as value! Hehe")
 
 (def name "Chewbacca")
@@ -104,41 +104,41 @@
 (defn multi-arity
   ;; 3-arity arguments and body
   ([first-arg second-arg third-arg]
-     (println first-arg second-arg third-arg))
+   (println first-arg second-arg third-arg))
   ;; 2-arity arguments and body
   ([first-arg second-arg]
-     (println first-arg second-arg))
+   (println first-arg second-arg))
   ;; 1-arity arguments and body
   ([first-arg]
-     (println first-arg)))
+   (println first-arg)))
 
 
 (defn x-chop
   "Describe the kind of chop you're inflicting on someone"
   ([name chop-type]
-     (println (str "I " chop-type " chop " name "! Take that!")))
+   (println (str "I " chop-type " chop " name "! Take that!")))
   ([name]
-     (println (str x-chop name "karate"))))
+   (println (str x-chop name "karate"))))
 
 
 (defn something-takes-one [oneparameter]
   "This function takes just one parameter"
   (str "hi this handles just one parameter and that is " oneparameter))
 
-(defn something-takes-multiple 
-  [& parameters] 
+(defn something-takes-multiple
+  [& parameters]
   (map something-takes-one parameters))
 
 ;; variable inputs
 (something-takes-multiple "afsal" "thaj" "this" "is" "multiple")
 
 (defn favorite-thingss [nname & other-pparameters]
-(println (str "this is amazing "nname " " (clojure.string/join ", " other-pparameters))))
+  (println (str "this is amazing " nname " " (clojure.string/join ", " other-pparameters))))
 
 
 ;;destructuring
 (defn announce-map [{lat :lat lng :lng}]
-  (println (str "latitude is "lat " and longitude is "lng )))
+  (println (str "latitude is " lat " and longitude is " lng)))
 
 (announce-map {:lat 125 :lng 41})
 
@@ -155,9 +155,9 @@
   ;; this should work - wtf
   (str "steership!" treasure-location)
 
-)
+  )
 
-(receive-another-function {:lat "afsal" :lng "thaj"} )
+(receive-another-function {:lat "afsal" :lng "thaj"})
 
 (receive-another-function {:lat 1 :lng 2})
 
@@ -167,7 +167,7 @@
 (map (fn [x] (str "yea m" x)) [1 2 3 4 5])
 
 
-(def i-named-function (fn [x] (str "this is "x)))
+(def i-named-function (fn [x] (str "this is " x)))
 
 (i-named-function 1)
 
@@ -176,7 +176,7 @@
 ;;closure
 
 (defn this-returns-a-function [some-arg]
- #(mod % some-arg))
+  #(mod % some-arg))
 
 (def new-function (this-returns-a-function 2))
 
@@ -191,22 +191,21 @@
 ;; Simple Loops
 (loop [iteration 0]
   (println (str "Iteration" iteration))
-  (if (> iteration 3 )
+  (if (> iteration 3)
     "Good Bye"
     (recur (inc iteration))))
 
 (loop [iteration 0 iteration2 0 iteration3 0]
   (println (str "Iterations " iteration " " iteration2 " " iteration3))
-    (if (and (> iteration 3) (> iteration2 3) (> iteration3 3))
-      "It is done...Please come out of the loop"
-       (recur (inc iteration) (inc iteration2) (inc iteration3))))
-
+  (if (and (> iteration 3) (> iteration2 3) (> iteration3 3))
+    "It is done...Please come out of the loop"
+    (recur (inc iteration) (inc iteration2) (inc iteration3))))
 
 (loop [iterations []]
-   (def xa (to-array iterations))
-   (if (>= (alength xa) 3) 
-     iterations 
-     (recur (into iterations (set [1 1 1 1 1 1 1 1 1 1 1 1])))))
+  (def xa (to-array iterations))
+  (if (>= (alength xa) 3)
+    iterations
+    (recur (into iterations (set [1 1 1 1 1 1 1 1 1 1 1 1])))))
 
 
 (into [] (set [:a :a]))

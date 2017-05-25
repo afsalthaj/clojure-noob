@@ -9,8 +9,8 @@
   [str]
   (Integer. str))
 
-(def conversions {:name identity 
-                 :glitter-index str->int})
+(def conversions {:name          identity
+                  :glitter-index str->int})
 
 (defn convert
   [vamp-key value]
@@ -20,7 +20,7 @@
 (defn parse
   "Convert a CSV into rows of columns"
   [string]
-  (map #(clojure.string/split % #",") 
+  (map #(clojure.string/split % #",")
        (clojure.string/split string #"\n")))
 
 
@@ -46,5 +46,5 @@
 
 (glitter-filter 3 (mapify (parse (slurp filename))))
 ({:name "Edward Cullen", :glitter-index 10}
- {:name "Jacob Black", :glitter-index 3}
- {:name "Carlisle Cullen", :glitter-index 6}) 
+  {:name "Jacob Black", :glitter-index 3}
+  {:name "Carlisle Cullen", :glitter-index 6})

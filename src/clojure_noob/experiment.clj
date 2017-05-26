@@ -3,7 +3,9 @@
 (def sample-applications
   [{:id 1 :status "finalised" :job 17 :applicant "hameesh"}
    {:id 2 :status "finalised" :job 10 :applicant "afsal"}
-   {:id 3 :status "finalised" :job 11 :applicant "thaj"}])
+   {:id 3 :status "finalised" :job 11 :applicant "thaj"}
+   {:id 4 :status "finalised" :job 12 :applicant "anotherapplicant"}
+   {:id 5 :status "finalised" :job 13 :applicant "mybro"}])
 
 
 (def sample-evaluations
@@ -11,12 +13,18 @@
    {:status "finalised" :job 10 :application 2 :evaluator 1}
    {:status "finalised" :job 17 :application 1 :evaluator 1}
    {:status "finalised" :job 17 :application 1 :evaluator 2}
+   {:status "takethisone" :job 17 :application 1 :evaluator 7}
+   ;; evaluator 8 is not listed in the invited evaluators and hence this evaluator won't be considered
+   {:status "application-wont-consider-this-guy" :job 17 :application 1 :evaluator 8}
+   {:status "takethisone" :job 13 :application 5 :evaluator 9}
    {:status "takethisone" :job 11 :application 3 :evaluator 4}])
 
 (def sample-jobs
   [{:id 17 :invited_evaluators [1 2 3]}
    {:id 11 :invited_evaluators [1 2 4]}
-   {:id 10 :invited_evaluators [3 2 4]}])
+   {:id 10 :invited_evaluators [3 2 4]}
+   {:id 12 :invited_evaluators [4 5 7]}
+   {:id 13 :invited_evaluators [9 10]}])
 
 (def expected
   { 3 [{:application 1, :evaluator 3, :job 17, :applicant "hameesh"}],
@@ -34,35 +42,10 @@
   [evaluation]
   (= (:status evaluation) "finalised"))
 
-(defn is-application-in-evaluations?
-  [finalised-application evaluations]
-  (some #(=(:id finalised-application)(:application %)) evaluations))
-
-(def is-application-not-in-evaluations? (complement is-application-in-evaluations?))
-
-(defn jobid->jobs->evaluators
-  [jobs jobid]
-  (into #{} (:invited_evaluators (first(filter #(= (:id %) jobid) jobs)))))
-
-(defn application->evaluations->evaluators[application evaluations]
-  (into #{} (map :evaluator (filter #(=(:application %) (:id application)) evaluations))))
-
 (defn not-to-be-evaluated?
   "is evaluation not to be evaluated?"
   [evaluation]
   (or (evaluation-nv? evaluation) (evaluation-complete? evaluation)))
-
-(def to-be-evaluated?
-  "Is this evaluation record to be evaluated? (complement of not-to-be-evaluated?) "
-  (complement not-to-be-evaluated?))
-
-(defn is-finalised-application-to-be-evaluated?
-  "Given a finalised application and a set of evaluations, verify if the application should be evaluated?"
-  [evaluations jobs finalised-application ]
-  ;; they needn't be in a single loop and make things complicated as they are chained by an or condition
-  (or (is-application-not-in-evaluations? finalised-application evaluations)
-      (some #(and (=(:id finalised-application)(:application %)) (to-be-evaluated? %)) evaluations)
-      (not (=(jobid->jobs->evaluators jobs (:job finalised-application))(application->evaluations->evaluators finalised-application evaluations)))))
 
 (defn finalised-application?
   "Finalised Application"
@@ -81,13 +64,8 @@
 
 (defn all-uncompleted-evaluations
   "target all finalised applications with pending evaluations"
-  [applications evaluations jobs]
-  (->
-    (->> applications
-         (get-finalised-applications)
-         (filter #(is-finalised-application-to-be-evaluated? evaluations jobs %)))
-    (flatten)
-    (into [])))
+  [applications]
+  (-> (->> applications (get-finalised-applications)) (into [])))
 
 (defn merge-job-application
   "Merge a job with various instances in applications sequence\n"
@@ -140,7 +118,7 @@
 (defn pending-evaluations
   [applications evaluations jobs]
   (->>
-    (all-uncompleted-evaluations applications evaluations jobs)
+    (all-uncompleted-evaluations applications)
     (get-job-application-records jobs)
     (explode-evaluators-in-job-application-records)
     (filter #(evaluator-not-completed-evaluation? (get-completed-evaluations evaluations) %))

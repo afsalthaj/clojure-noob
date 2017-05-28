@@ -206,6 +206,3 @@
   (if (>= (alength xa) 3)
     iterations
     (recur (into iterations (set [1 1 1 1 1 1 1 1 1 1 1 1])))))
-
-
-(into [] (set [:a :a]))

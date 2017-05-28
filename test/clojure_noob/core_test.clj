@@ -4,7 +4,7 @@
             [clojure-noob.experiment :refer :all]))
 
 (deftest empty-applications-and-non-empty-evaluations
-  " Regardless of what is there in evaluations and jobs entity,
+  "Regardless of what is there in evaluations and jobs entity,
   if there are no applications in the application entity, there will be no output"
   (def applications [])
 

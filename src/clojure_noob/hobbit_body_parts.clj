@@ -1,4 +1,4 @@
-(ns clojure-noob.core
+(ns clojure-noob.hobbit-body-parts
   (:gen-class))
 
 ;; binding the sequence of hashmaps to assym-hobbit-body-parts

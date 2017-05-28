@@ -1,4 +1,4 @@
-(ns clojure-noob.core
+(ns clojure-noob.corefuns
   (:gen-class))
 
 (reduce + [1 2 3 4])
